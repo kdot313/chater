@@ -35,7 +35,7 @@ To set up the Ecommerce Chatbot locally, follow these steps:
 ```
 
 ```bash
-    conda activate env567/
+    conda activate ./env
 ```
 
 ### Step 4: Install the requirements
