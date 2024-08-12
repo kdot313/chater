@@ -67,7 +67,7 @@ To set up the Ecommerce Chatbot locally, follow these steps:
     sudo apt-get update
 ```
 
-### Step-8: This command uses apt-get, the traditional package management tool.
+### Step-8: This command uses apt, a newer, more user-friendly command-line interface for the APT package management system.
 ```bash
     sudo apt update -y
 ```
@@ -101,8 +101,6 @@ To set up the Ecommerce Chatbot locally, follow these steps:
 
 ### Step-14: install the requirements.txt. The --break-system-packages flag in pip allows to override the externally-managed-environment error and install Python packages system-wide.
 ```bash
-    pip3 install -r requirements.txt
-
     pip3 install -r  requirements.txt --break-system-packages
 ```
 
