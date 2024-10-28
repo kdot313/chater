@@ -6,5 +6,5 @@ setup(
     author="Jatin",
     author_email="sareenjatin002@gmail.com",
     packages=find_packages(),
-    install_requires=['langchain-astradb','langchain ','langchain-openai','datasets','pypdf','python-dotenv','flask']
+    install_requires=['langchain-astradb','langchain ','langchain-google-genai','datasets','pypdf','python-dotenv','flask']
 )

@@ -1,24 +1,20 @@
 from langchain_astradb import AstraDBVectorStore
-from langchain_openai import OpenAIEmbeddings
 from dotenv import load_dotenv
 import google.generativeai as genai
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain.embeddings import HuggingFaceEmbeddings
 import os
 import pandas as pd
 from ecommbot.data_converter import dataconveter
 
 load_dotenv()
 
-GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 ASTRA_DB_API_ENDPOINT=os.getenv("ASTRA_DB_API_ENDPOINT")
 ASTRA_DB_APPLICATION_TOKEN=os.getenv("ASTRA_DB_APPLICATION_TOKEN")
 ASTRA_DB_KEYSPACE=os.getenv("ASTRA_DB_KEYSPACE")
 
-# Configure Google Generative AI
-genai.configure(api_key=GOOGLE_API_KEY)
 
-# Create embeddings object
-embedding = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
+# Create embeddings object using an open-source model
+embedding = HuggingFaceEmbeddings(model_name="sentence-transformers/all-mpnet-base-v2")
 
 def ingestdata(status):
     vstore = AstraDBVectorStore(

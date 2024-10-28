@@ -1,12 +1,27 @@
+import os,subprocess,threading
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
-from langchain_openai import ChatOpenAI
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_ollama import ChatOllama
 from ecommbot.ingest import ingestdata
 
+def ollama():
+    os.environ['OLLAMA_HOST'] = '0.0.0.0:11434'
+    os.environ['OLLAMA_ORIGINS'] = '*'
+    subprocess.Popen(["ollama", "serve"])
+
+    # Install Ollama and run LLaMA model
+    subprocess.run("curl -fsSL https://ollama.com/install.sh | sh", shell=True)
+    subprocess.run("ollama run llama3.1", shell=True)
 
 def generation(vstore):
+    # Start Ollama server in a separate thread
+    ollama_thread = threading.Thread(target=ollama)
+    ollama_thread.start()
+
+    # os.system("!curl -fsSL https://ollama.com/install.sh")
+    # os.system("!ollama run llama3.1")
+
     retriever = vstore.as_retriever(search_kwargs={"k": 3})
 
     PRODUCT_BOT_TEMPLATE = """
@@ -27,7 +42,7 @@ def generation(vstore):
 
     prompt = ChatPromptTemplate.from_template(PRODUCT_BOT_TEMPLATE)
 
-    llm = ChatGoogleGenerativeAI(model="gemini-1.5-pro")
+    llm = ChatOllama(model="llama3.1")
 
     chain = (
         {"context": retriever, "question": RunnablePassthrough()}

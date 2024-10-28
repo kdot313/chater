@@ -1,10 +1,10 @@
 langchain-astradb
-langchain 
-langchain-openai
+langchain
 datasets
 pypdf
 python-dotenv
 flask
-langchain-google-genai
+sentence-transformers
+langchain-ollama
 
 -e .
