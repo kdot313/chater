@@ -10,7 +10,7 @@ app = Flask(__name__)
 load_dotenv()
 
 vstore = ingestdata("done")
-chain = generation(vstore)
+conversational_rag_chain = generation(vstore)
 
 def format_bold_and_list_text(text):
     # Convert **text** to <strong>text</strong> for HTML bold formatting
@@ -31,7 +31,11 @@ def index():
 def chat():
     msg = request.form["msg"]
     input = msg
-    result = chain.invoke(input)
+    result = conversational_rag_chain.invoke({"input": input},
+                config={
+                        "configurable": {"session_id": "abc123"}
+                        },  # constructs a key "abc123" in `store`.
+                )["answer"]
 
     # Format the result text to handle bold, lists, and line breaks
     result_html = format_bold_and_list_text(result)
