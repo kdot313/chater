@@ -8,10 +8,10 @@ from ecommbot.data_converter import dataconveter
 
 load_dotenv()
 
-ASTRA_DB_API_ENDPOINT=os.getenv("ASTRA_DB_API_ENDPOINT")
-ASTRA_DB_APPLICATION_TOKEN=os.getenv("ASTRA_DB_APPLICATION_TOKEN")
-ASTRA_DB_KEYSPACE=os.getenv("ASTRA_DB_KEYSPACE")
-
+ASTRA_DB_API_ENDPOINT = os.getenv("ASTRA_DB_API_ENDPOINT")
+ASTRA_DB_APPLICATION_TOKEN = os.getenv("ASTRA_DB_APPLICATION_TOKEN")
+ASTRA_DB_KEYSPACE = os.getenv("ASTRA_DB_KEYSPACE")
+HF_TOKEN = os.getenv("HF_TOKEN")
 
 # Create embeddings object using an open-source model
 embedding = HuggingFaceEmbeddings(model_name="sentence-transformers/all-mpnet-base-v2")
