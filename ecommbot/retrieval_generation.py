@@ -10,17 +10,10 @@ def ollama():
     os.environ['OLLAMA_ORIGINS'] = '*'
     subprocess.Popen(["ollama", "serve"])
 
-    # Install Ollama and run LLaMA model
-    subprocess.run("curl -fsSL https://ollama.com/install.sh | sh", shell=True)
-    subprocess.run("ollama run llama3.1", shell=True)
-
 def generation(vstore):
     # Start Ollama server in a separate thread
     ollama_thread = threading.Thread(target=ollama)
     ollama_thread.start()
-
-    # os.system("!curl -fsSL https://ollama.com/install.sh")
-    # os.system("!ollama run llama3.1")
 
     retriever = vstore.as_retriever(search_kwargs={"k": 3})
 
@@ -42,7 +35,7 @@ def generation(vstore):
 
     prompt = ChatPromptTemplate.from_template(PRODUCT_BOT_TEMPLATE)
 
-    llm = ChatOllama(model="llama3.1")
+    llm = ChatOllama(model="llama3.1:8b")
 
     chain = (
         {"context": retriever, "question": RunnablePassthrough()}
@@ -56,4 +49,4 @@ def generation(vstore):
 if __name__=='__main__':
     vstore = ingestdata("done")
     chain  = generation(vstore)
-    print(chain.invoke("can you tell me the best bluetooth buds?"))    
+    print(chain.invoke("can you tell me the best bluetooth buds?"))
