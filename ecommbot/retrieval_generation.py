@@ -60,6 +60,9 @@ def generation(vstore):
 
     CONTEXT:
     {context}
+
+    CHAT HISTORY:
+    {chat_history}
     """
 
     qa_prompt = ChatPromptTemplate.from_messages(
@@ -76,12 +79,12 @@ def generation(vstore):
     rag_chain = create_retrieval_chain(history_aware_retriever, question_answer_chain)
 
     conversational_rag_chain = RunnableWithMessageHistory(
-        rag_chain,
-        get_session_history,
-        input_messages_key="input",
-        history_messages_key="chat_history",
-        output_messages_key="answer",
-    )
+                                rag_chain,
+                                get_session_history,
+                                input_messages_key="input",
+                                history_messages_key="chat_history",
+                                output_messages_key="answer",
+                                )
 
     return conversational_rag_chain
 
