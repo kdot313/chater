@@ -6,5 +6,7 @@ python-dotenv
 flask
 sentence-transformers
 langchain-ollama
+celery
+redis
 
 -e .
