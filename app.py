@@ -4,12 +4,21 @@ import os
 import re
 from ecommbot.retrieval_generation import generation
 from ecommbot.ingest import ingestdata
+from celery import Celery
 
 app = Flask(__name__)
-app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
-app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 600
+app.config['CELERY_BROKER_URL'] = 'redis://localhost:6379/0'
+app.config['CELERY_RESULT_BACKEND'] = 'redis://localhost:6379/0'
+
+def make_celery(app):
+    celery = Celery(app.import_name, backend=app.config['CELERY_RESULT_BACKEND'],
+                    broker=app.config['CELERY_BROKER_URL'])
+    celery.conf.update(app.config)
+    return celery
 
 load_dotenv()
+
+celery = make_celery(app)
 
 vstore, inserted_ids = ingestdata()
 conversational_rag_chain = generation(vstore)
@@ -29,16 +38,17 @@ def format_bold_and_list_text(text):
 def index():
     return render_template('chat.html')
 
-@app.route("/get", methods=["GET","POST"])
-def chat():
-    msg = request.form["msg"]
+# Celery task for generating response
+@celery.task
+def generate_response_task(msg):
     input = msg
+
     result = conversational_rag_chain.invoke({"input": input},
                 config={
                         "configurable": {"session_id": "abc123"}
                         },  # constructs a key "abc123" in `store`.
                 )["answer"]
-
+    
     # Format the result text to handle bold, lists, and line breaks
     result_html = format_bold_and_list_text(result)
 
@@ -51,9 +61,27 @@ def chat():
         "</div>"
         "</div>"
     )
+    return formatted_result
 
-    print("Response:", formatted_result)
-    return jsonify({"Response": formatted_result})
+# Start the background task and return task_id
+@app.route("/get", methods=["POST"])
+def chat():
+    msg = request.form["msg"]
+    task = generate_response_task.delay(msg)
+
+    return jsonify({"task_id": task.id}), 202
+
+# Polling endpoint to retrieve task result
+@app.route("/result/<task_id>")
+def get_result(task_id):
+    task = generate_response_task.AsyncResult(task_id)
+    if task.state == 'SUCCESS':
+        return jsonify({"Response": task.result}), 200
+    elif task.state == 'PENDING':
+        return jsonify({"status": "processing"}), 202
+    else:
+        return jsonify({"status": "error"}), 500
+
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0")
