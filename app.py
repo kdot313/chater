@@ -6,10 +6,11 @@ from ecommbot.retrieval_generation import generation
 from ecommbot.ingest import ingestdata
 
 app = Flask(__name__)
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
 load_dotenv()
 
-vstore = ingestdata("done")
+vstore, inserted_ids = ingestdata()
 conversational_rag_chain = generation(vstore)
 
 def format_bold_and_list_text(text):
@@ -27,7 +28,7 @@ def format_bold_and_list_text(text):
 def index():
     return render_template('chat.html')
 
-@app.route("/get", methods=["GET", "POST"])
+@app.route("/get", methods=["POST"])
 def chat():
     msg = request.form["msg"]
     input = msg
@@ -51,7 +52,7 @@ def chat():
     )
 
     print("Response:", formatted_result)
-    return formatted_result
+    return jsonify({"Response": formatted_result})
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0")
