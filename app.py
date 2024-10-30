@@ -66,7 +66,7 @@ def generate_response_task(msg):
 # Start the background task and return task_id
 @app.route("/get", methods=["POST"])
 def chat():
-    msg = request.form["msg"]
+    msg = request.json.get("msg")
     task = generate_response_task.delay(msg)
 
     return jsonify({"task_id": task.id}), 202
