@@ -9,34 +9,41 @@ document.addEventListener("DOMContentLoaded", function () {
         appendMessage("user", userMessage);
         userInput.value = "";
 
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 300000); // 5-minute timeout
-
         try {
-            const response = await fetch("/get", {
+            // Step 1: Send initial message to start task
+            const startResponse = await fetch("/get", {
                 method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: new URLSearchParams({ msg: userMessage }),
-                signal: controller.signal // Use AbortController's signal
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ msg: userMessage })
             });
 
-            clearTimeout(timeoutId); // Clear timeout if response received
+            if (!startResponse.ok) {
+                throw new Error("Failed to start task.");
+            }
 
-            if (response.ok) {
-                const data = await response.json();
-                appendMessage("bot", data.Response);
-            } else {
-                console.error("Server error:", response.statusText);
-                appendMessage("bot", "Sorry, there was an issue retrieving the response.");
+            const { task_id } = await startResponse.json();
+
+            // Step 2: Poll for result
+            let result;
+            while (!result) {
+                const pollResponse = await fetch(`/result/${task_id}`);
+                const pollData = await pollResponse.json();
+
+                if (pollData.status === "processing") {
+                    await new Promise((resolve) => setTimeout(resolve, 2000)); // Wait 2 seconds before next poll
+                } else if (pollData.Response) {
+                    result = pollData.Response;
+                } else {
+                    throw new Error("Failed to retrieve result.");
+                }
             }
+
+            // Display the response from the bot
+            appendMessage("bot", result);
+
         } catch (error) {
-            if (error.name === 'AbortError') {
-                console.error("Fetch timeout:", error);
-                appendMessage("bot", "The server is taking too long to respond. Please try again later.");
-            } else {
-                console.error("Network error:", error);
-                appendMessage("bot", "Sorry, a network error occurred.");
-            }
+            console.error("Error:", error);
+            appendMessage("bot", "Sorry, there was an issue retrieving the response.");
         }
     });
 
