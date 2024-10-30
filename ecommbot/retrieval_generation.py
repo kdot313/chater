@@ -1,4 +1,3 @@
-import os,subprocess,threading
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.runnables import RunnablePassthrough
@@ -10,11 +9,7 @@ from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.runnables.history import RunnableWithMessageHistory
-
-def ollama():
-    os.environ['OLLAMA_HOST'] = '0.0.0.0:11434'
-    os.environ['OLLAMA_ORIGINS'] = '*'
-    subprocess.Popen(["ollama", "serve"])
+from ecommbot.model import initialize_chat_ollama
 
 ### Statefully manage chat history ###
 store = {}
@@ -25,9 +20,8 @@ def get_session_history(session_id: str) -> BaseChatMessageHistory:
     return store[session_id]
 
 def generation(vstore):
-    # Start Ollama server in a separate thread
-    ollama_thread = threading.Thread(target=ollama)
-    ollama_thread.start()
+    # Start Ollama server in a separate thread if it’s not already running
+    initialize_chat_ollama()
     
     llm = ChatOllama(model="llama3.1:8b")
     
@@ -89,6 +83,6 @@ def generation(vstore):
     return conversational_rag_chain
 
 if __name__=='__main__':
-    vstore = ingestdata("done")
+    vstore = ingestdata()
     chain  = generation(vstore)
     print(chain.invoke("can you tell me the best bluetooth buds?"))
