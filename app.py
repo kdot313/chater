@@ -7,6 +7,7 @@ from ecommbot.ingest import ingestdata
 
 app = Flask(__name__)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 600
 
 load_dotenv()
 
@@ -28,7 +29,7 @@ def format_bold_and_list_text(text):
 def index():
     return render_template('chat.html')
 
-@app.route("/get", methods=["POST"])
+@app.route("/get", methods=["GET","POST"])
 def chat():
     msg = request.form["msg"]
     input = msg
