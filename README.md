@@ -20,12 +20,12 @@ The Code is written in Python 3.10.15. If you don't have Python installed you ca
 
 ## Run Locally
 
-### Step-1: Clone the repository to your local machine:
+### Step 1: Clone the repository to your local machine:
 ```bash
     git clone https://github.com/jatin-12-2002/E-Commerce_ChatBot
 ```
 
-### Step-2: Navigate to the project directory:
+### Step 2: Navigate to the project directory:
 ```bash
     cd E-Commerce_ChatBot
 ```
@@ -45,7 +45,7 @@ The Code is written in Python 3.10.15. If you don't have Python installed you ca
     pip install -r requirements.txt
 ```
 
-### Step-5: Set up environment variables:
+### Step 5: Set up environment variables:
 - Create a .env file in the project directory.
 - Define the necessary environment variables such as database connection strings, API keys, etc.
 - Your .env file should should have these variables:
@@ -57,58 +57,78 @@ The Code is written in Python 3.10.15. If you don't have Python installed you ca
 ```
 - My .env file is [here](https://drive.google.com/file/d/1HadmVnwU_LLi_XvA9ci9MHFLsq_p3Y3o/view?usp=sharing)
   
-### Step-6: Run the Flask application:
+### Step 6: Run the Flask application:
 ```bash
     python app.py
 ```
 
 ## AWS DEPLOYMENT
-### Step-1: Push your entire code to github
-### Step-2: Login to your AWS account Link
-### Step-3: Launch your EC2 Instance
-### Step-4: Configure your EC2 Instance
-### Step-5: Command for configuring EC2 Instance.
-### INFORMATION: sudo apt-get update and sudo apt update are used to update the package index on a Debian-based system like Ubuntu, but they are slightly different in terms of the tools they use and their functionality:
-### Step-6: Connect your EC2 Instance and start typing the following commands
+### Step 1: Push your entire code to github.
+### Step 2: Login to your AWS account Link.
+### Step 3: Launch your EC2 Instance.
+### Step 4: Configure your EC2 Instance.
+```bash
+Use t2.large or greater size instances only as it is a GenerativeAI using LLMs project.
+```
 
-### Step-7: This command uses apt-get, the traditional package management tool.
+### Step 5: Command for configuring EC2 Instance.
+
+### INFORMATION: sudo apt-get update and sudo apt update are used to update the package index on a Debian-based system like Ubuntu, but they are slightly different in terms of the tools they use and their functionality:
+
+### Step 6: Connect your EC2 Instance and start typing the following commands
+
+### Step 6.1: This command uses apt-get, the traditional package management tool.
 ```bash
     sudo apt-get update
 ```
 
-### Step-8: This command uses apt, a newer, more user-friendly command-line interface for the APT package management system.
+### Step 6.2: This command uses apt, a newer, more user-friendly command-line interface for the APT package management system.
 ```bash
     sudo apt update -y
 ```
 
-### Step-9: Install required tools.
+### Step 6.3: Install required tools.
 ```bash
     sudo apt install git curl unzip tar make sudo vim wget -y
 ```
 
-### Step-10: Clone git repository.
+### Step 6.4: Clone git repository.
 ```bash
-    git clone https://github.com/jatin-12-2002/E-Commerce_ChatBot_Project
+    git clone https://github.com/jatin-12-2002/E-Commerce_ChatBot
 ```
 
-### Step-11: Create a .env file there.
+### Step 6.5: Create a .env file there.
 ```bash
     touch .env
 ```
 
-### Step-12: Open file in VI editor.
+### Step 6.6: Open file in VI editor.
 ```bash
     vi .env
 ```
-### Press insert and Mention env variable then press esc for saving and write :wq for exit.
-### cat .env #for checking the value
 
-### Step-13: For installing python and pip here is a command
+### Step 6.7: Press insert and Mention .env variable then press esc for saving and write :wq for exit.
+```bash
+    ASTRA_DB_API_ENDPOINT=""
+    ASTRA_DB_APPLICATION_TOKEN=""
+    ASTRA_DB_KEYSPACE=""
+    HF_TOKEN=""
+```
+### Step 6.8: ### For checking the values of .env variables.
+```bash
+    cat .env
+```
+
+### Step 6.9: For installing python and pip here is a command
 ```bash
     sudo apt install python3-pip
 ```
 
-### Step-14: install the requirements.txt. The --break-system-packages flag in pip allows to override the externally-managed-environment error and install Python packages system-wide.
+### Step 6.10: install the requirements.txt. The --break-system-packages flag in pip allows to override the externally-managed-environment error and install Python packages system-wide.
+```bash
+    pip3 install -r  requirements.txt
+```
+**OR**
 ```bash
     pip3 install -r  requirements.txt --break-system-packages
 ```
@@ -121,6 +141,8 @@ The Code is written in Python 3.10.15. If you don't have Python installed you ca
 2. Click on security group
 3. Configure your inbound rule with certain values
 4. Port 5000 0.0.0.0/0 for anywhere traffic TCP/IP protocol
+5. Port 8000 0.0.0.0/0 for anywhere traffic TCP/IP protocol
+6. Port 11434 0.0.0.0/0 for anywhere traffic TCP/IP protocol
 
 ### Step-16: Save it and now run your application.
 ```bash
