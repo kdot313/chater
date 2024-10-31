@@ -10,7 +10,7 @@ The chatbot employs **LLaMA 3.1-8b**, a large language model known for its abili
 ## RAG with Chat History
 To provide coherent, context-aware responses, the chatbot uses a history-aware **RAG** approach. By incorporating **chat history** into each interaction, the model can understand references to previous messages and maintain continuity across multiple turns. **LangChain’s history management** features make this process seamless by allowing stateful management of chat history for each user session.
 
-## Apporach Summary
+## Dataset Handling Apporach
 The **dataset** used in this project comprises product reviews sourced from **Flipkart**, an e-commerce platform. The dataset includes product titles, ratings, and detailed reviews, offering a comprehensive view of customer feedback across various products. The primary purpose of this dataset is to power the chatbot's retrieval capabilities, enabling it to reference real-world product sentiments, features, and customer experiences. Each review is stored as a **Document** object within **LangChain**, containing the review as content and the product name as metadata. The **dataset** is ingested into **AstraDB** as a vector store, enabling **similarity searches** that match user queries with relevant reviews, enhancing the chatbot's recommendations and responses.
 
 ## Frontend and Interaction
@@ -319,3 +319,13 @@ Public_Address:8080
 ### This setup makes your app production-ready by using Nginx and Gunicorn for stability, performance, and scalability. You can continue to scale by increasing Gunicorn workers or adding load balancing if traffic grows.
 
 ## Conclusion 
+
+1. This **E-commerce chatbot** provides an intelligent, interactive shopping experience through a **RAG** approach that combines retrieval and generation, offering relevant product recommendations based on actual customer reviews.
+
+2. **LLaMA 3.1's large language model** and **HuggingFace embeddings** enable nuanced responses, enhancing user engagement with contextually aware conversations.
+
+3. Efficient response handling with **Redis** and **Celery** addresses the demands of a high-performing application, ensuring stable, responsive user experiences even with **large LLMs**.
+
+4. A fully scalable **AWS EC2 deployment** allows seamless integration into e-commerce platforms, offering robust infrastructure for high-traffic environments.
+
+5. This project showcases a powerful application of **Large Language Models**, pushing the boundaries of chatbot capabilities in the e-commerce domain.
