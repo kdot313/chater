@@ -16,16 +16,18 @@ The Ecommerce Chatbot is built using Python and Flask framework. It leverages na
 
 ## Installation
 
-To set up the Ecommerce Chatbot locally, follow these steps:
+The Code is written in Python 3.10.15. If you don't have Python installed you can find it here. If you are using a lower version of Python you can upgrade using the pip package, ensuring you have the latest version of pip.
+
+## Run Locally
 
 ### Step-1: Clone the repository to your local machine:
 ```bash
-    git clone https://github.com/jatin-12-2002/E-Commerce_ChatBot_Project
+    git clone https://github.com/jatin-12-2002/E-Commerce_ChatBot
 ```
 
 ### Step-2: Navigate to the project directory:
 ```bash
-    cd ecommerce-chatbot
+    cd E-Commerce_ChatBot
 ```
 
 ### Step 3: Create a conda environment after opening the repository
@@ -35,7 +37,7 @@ To set up the Ecommerce Chatbot locally, follow these steps:
 ```
 
 ```bash
-    conda activate ./env
+    source activate ./env
 ```
 
 ### Step 4: Install the requirements
@@ -46,6 +48,13 @@ To set up the Ecommerce Chatbot locally, follow these steps:
 ### Step-5: Set up environment variables:
 - Create a .env file in the project directory.
 - Define the necessary environment variables such as database connection strings, API keys, etc.
+- Your .env file should should have these variables:
+```bash
+    ASTRA_DB_API_ENDPOINT=""
+    ASTRA_DB_APPLICATION_TOKEN=""
+    ASTRA_DB_KEYSPACE=""
+    HF_TOKEN=""
+```
 - My .env file is [here](https://drive.google.com/file/d/1HadmVnwU_LLi_XvA9ci9MHFLsq_p3Y3o/view?usp=sharing)
   
 ### Step-6: Run the Flask application:
