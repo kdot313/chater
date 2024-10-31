@@ -8,5 +8,6 @@ sentence-transformers
 langchain-ollama
 celery
 redis
+gunicorn
 
 -e .
